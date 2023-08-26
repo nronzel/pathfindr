@@ -1,0 +1,25 @@
+{
+  "name": "crawler",
+  "version": "1.0.0",
+  "description": "Generate SEO report on internal links.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nronzel/pathfindr.git"
+  },
+  "keywords": [
+    "crawler",
+    "seo",
+    "link",
+    "crawler"
+  ],
+  "author": "nronzel",
+  "license": "GPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/nronzel/pathfindr/issues"
+  },
+  "homepage": "https://github.com/nronzel/pathfindr#readme"
+}
