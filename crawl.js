@@ -1,4 +1,4 @@
-const { url } = require('url');
+const { URL } = require('url');
 const { JSDOM } = require('jsdom');
 
 const normalizeURL = (url) => {
@@ -6,7 +6,6 @@ const normalizeURL = (url) => {
     const urlObj = new URL(url);
     let path = removeTrailingSlash(urlObj.pathname);
     const normalized = urlObj.hostname + path;
-
     return normalized;
   } catch (error) {
     throw error;
@@ -14,11 +13,20 @@ const normalizeURL = (url) => {
 };
 
 const getURLsFromHTML = (htmlBody, baseURL) => {
-  const newDom = new JSDOM(htmlBody);
-    const links = newDom.window.document.querySelectorAll('a')
-    for (const link of links) {
-        return removeTrailingSlash(link.href)
+  const dom = new JSDOM(htmlBody);
+  const aTags = dom.window.document.querySelectorAll('a');
+  const foundLinks = new Set();
+
+  for (const tag of aTags) {
+    let fullURL;
+    if (tag.href[0] === '/') {
+      fullURL = new URL(tag.href, baseURL).toString();
+    } else {
+      fullURL = tag.href;
     }
+    foundLinks.add(fullURL);
+  }
+  return Array.from(foundLinks);
 };
 
 // Helper functions
