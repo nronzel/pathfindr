@@ -13,6 +13,7 @@ const normalizeURL = (url) => {
 };
 
 const getURLsFromHTML = (htmlBody, baseURL) => {
+  // returns non-normalized URLs from page
   const dom = new JSDOM(htmlBody);
   const aTags = dom.window.document.querySelectorAll('a');
   const foundLinks = new Set();
