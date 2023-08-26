@@ -96,7 +96,41 @@ describe('Test URL extraction', () => {
             </body>
         </html>
         `;
-    const extracted = getURLsFromHTML(html, 'blog.boot.dev');
-    expect(extracted).toBe('https://blog.boot.dev');
+    const extracted = getURLsFromHTML(html, 'https://blog.boot.dev');
+    expect(extracted).toBeInstanceOf(Array);
+    expect(extracted[0]).toBe('https://blog.boot.dev/');
+  });
+
+  test('test relative URL', () => {
+    const html = `
+        <html>
+            <body>
+                <a href="/articles/posts/"><span>See Posts</span></a>
+            </body>
+        </html>
+        `;
+    const extracted = getURLsFromHTML(html, 'https://blog.boot.dev');
+    expect(extracted).toStrictEqual(['https://blog.boot.dev/articles/posts/']);
+  });
+
+  test('test multiple a tags', () => {
+    const html = `
+        <html>
+            <body>
+                <a href="/articles/posts/">Posts</a>
+                <div>
+                    <a href="https://blog.boot.dev/home">Home</a>
+                </div>
+            </body>
+        </html>
+        `;
+    const extracted = getURLsFromHTML(html, 'https://blog.boot.dev');
+    const expected = [
+      'https://blog.boot.dev/articles/posts/',
+      'https://blog.boot.dev/home',
+    ];
+    for (let i = 0; i < expected.length; i++) {
+      expect(extracted[i]).toBe(expected[i]);
+    }
   });
 });
