@@ -25,5 +25,8 @@
   "homepage": "https://github.com/nronzel/pathfindr#readme",
   "devDependencies": {
     "jest": "^29.6.4"
+  },
+  "dependencies": {
+    "jsdom": "^22.1.0"
   }
 }
