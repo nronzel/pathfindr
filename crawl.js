@@ -1,4 +1,5 @@
-const url = require('node:url');
+const { url } = require('url');
+const { JSDOM } = require('jsdom');
 
 const normalizeURL = (url) => {
   try {
@@ -12,6 +13,15 @@ const normalizeURL = (url) => {
   }
 };
 
+const getURLsFromHTML = (htmlBody, baseURL) => {
+  const newDom = new JSDOM(htmlBody);
+    const links = newDom.window.document.querySelectorAll('a')
+    for (const link of links) {
+        return removeTrailingSlash(link.href)
+    }
+};
+
+// Helper functions
 const removeTrailingSlash = (path) => {
   const lastChar = path.slice(-1);
   if (lastChar === '/') {
@@ -23,4 +33,5 @@ const removeTrailingSlash = (path) => {
 
 module.exports = {
   normalizeURL,
+  getURLsFromHTML,
 };

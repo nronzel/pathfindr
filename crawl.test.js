@@ -1,5 +1,5 @@
 const { test, expect } = require('@jest/globals');
-const { normalizeURL } = require('./crawl');
+const { normalizeURL, getURLsFromHTML } = require('./crawl');
 
 describe('test url normalization', () => {
   test('test basic urls no paths', () => {
@@ -84,5 +84,19 @@ describe('test url normalization', () => {
   test('test encoded characters in path', () => {
     const normalized = normalizeURL('https://blog.boot.dev/one%20two');
     expect(normalized).toBe('blog.boot.dev/one%20two');
+  });
+});
+
+describe('Test URL extraction', () => {
+  test('extract URL from simple HTML', () => {
+    const html = `
+        <html>
+            <body>
+                <a href="https://blog.boot.dev"><span>Go to Boot.dev</span></a>
+            </body>
+        </html>
+        `;
+    const extracted = getURLsFromHTML(html, 'blog.boot.dev');
+    expect(extracted).toBe('https://blog.boot.dev');
   });
 });
