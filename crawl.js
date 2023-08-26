@@ -1,11 +1,15 @@
 const url = require('node:url');
 
 const normalizeURL = (url) => {
-  const urlObj = new URL(url);
-  let path = removeTrailingSlash(urlObj.pathname);
-  const normalized = urlObj.hostname + path;
+  try {
+    const urlObj = new URL(url);
+    let path = removeTrailingSlash(urlObj.pathname);
+    const normalized = urlObj.hostname + path;
 
-  return normalized;
+    return normalized;
+  } catch (error) {
+    throw error;
+  }
 };
 
 const removeTrailingSlash = (path) => {
