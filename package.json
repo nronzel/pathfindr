@@ -2,9 +2,9 @@
   "name": "crawler",
   "version": "1.0.0",
   "description": "Generate SEO report on internal links.",
-  "main": "index.js",
+  "main": "main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node main.js"
   },
   "repository": {
     "type": "git",
