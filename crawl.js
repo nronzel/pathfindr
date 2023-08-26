@@ -30,6 +30,23 @@ const getURLsFromHTML = (htmlBody, baseURL) => {
   return Array.from(foundLinks);
 };
 
+const crawlPage = async (baseURL) => {
+  try {
+    const res = await fetch(baseURL);
+    if (res.status !== 200) {
+      throw new Error(`Received response status code ${res.status}`);
+    }
+    const contentType = res.headers.get('Content-Type');
+    if (!contentType || !contentType.includes('text/html')) {
+      throw new Error(`Received unwanted Content-Type: ${contentType}`);
+    }
+    const data = await res.text();
+    console.log(data);
+  } catch (error) {
+    console.error('Error: ', error);
+  }
+};
+
 // Helper functions
 const removeTrailingSlash = (path) => {
   const lastChar = path.slice(-1);
@@ -43,4 +60,5 @@ const removeTrailingSlash = (path) => {
 module.exports = {
   normalizeURL,
   getURLsFromHTML,
+  crawlPage,
 };
