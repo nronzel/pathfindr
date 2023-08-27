@@ -133,4 +133,21 @@ describe('Test URL extraction', () => {
       expect(extracted[i]).toBe(expected[i]);
     }
   });
+
+  test('blank URL', () => {
+    const html = `
+        <html>
+            <body>
+                <a href="">Articles</a>
+                <a href="/posts">Posts</a>
+            </body>
+        </html>
+        `;
+
+    const expected = ['https://blog.boot.dev/posts'];
+    const extracted = getURLsFromHTML(html, 'https://blog.boot.dev');
+    for (let i = 0; i < expected.length; i++) {
+      expect(extracted[i]).toBe(expected[i]);
+    }
+  });
 });
