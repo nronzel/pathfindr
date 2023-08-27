@@ -23,7 +23,6 @@ const normalizeURL = (url) => {
 
 const getURLsFromHTML = (htmlBody, baseURL) => {
   // returns non-normalized URLs from page
-
   try {
     const dom = new JSDOM(htmlBody);
     const aTags = dom.window.document.querySelectorAll('a');
