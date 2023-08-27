@@ -1,7 +1,7 @@
 const { test, expect } = require('@jest/globals');
 const { normalizeURL, getURLsFromHTML } = require('./crawl');
 
-describe('test url normalization', () => {
+describe('Test url normalization', () => {
   test('test basic urls no paths', () => {
     const testURLs = ['http://blog.boot.dev/', 'https://blog.boot.dev'];
 
