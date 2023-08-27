@@ -50,14 +50,10 @@ To run the available unit tests:
 npm test
 ```
 
-## Coming Soon
-
-- [ ] CSV export
-
 ## Future Roadmap
 
 - Enhance error handling to accommodate larger, more complex sites.
 - Include external link counts in report.
-- ~~Add CSV export functionality.~~ _coming soon_
+- ~~Add CSV export functionality.~~
 - Implement logging for comprehensive crawling records.
 - Incorporate data visualization to represent internal linking graphically.
