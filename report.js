@@ -49,6 +49,7 @@ const objectToCsv = (data) => {
 };
 
 const writeCsvFile = (filename, data) => {
+  filename = processFileName(filename);
   const csvData = objectToCsv(data);
 
   if (csvData === null) {
@@ -56,12 +57,25 @@ const writeCsvFile = (filename, data) => {
     return;
   }
 
-  fs.writeFile(`${filename}.csv`, csvData, (err) => {
+  const directory = './crawled';
+
+  fs.mkdir(directory, { recursive: true }, (err) => {
+    if (err) {
+      console.error(`Could not create directory: ${err}`);
+      return;
+    }
+  });
+
+  fs.writeFile(`./crawled/${filename}.csv`, csvData, (err) => {
     if (err) {
       console.error(`Could not save data to file: ${err}`);
     }
-    console.log(`Data saved to ${filename}.csv`);
+    console.log(`Data saved to ./crawled/${filename}.csv`);
   });
+};
+
+const processFileName = (fileName) => {
+  return fileName.replaceAll('.', '-');
 };
 
 module.exports = {
