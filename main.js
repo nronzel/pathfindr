@@ -10,7 +10,14 @@ const main = async () => {
   const baseURL = new URL(args[0]);
 
   console.log(`Starting crawl on ${baseURL}`);
+
+  const startTime = new Date().getTime();
   const links = await crawlPage(baseURL);
+  const endTime = new Date().getTime();
+
+  const elapsedTime = endTime - startTime;
+  console.log(`Crawl completed. Took ${elapsedTime}ms to complete.`);
+
   printReport(links);
   writeCsvFile(baseURL.host, links);
 };
