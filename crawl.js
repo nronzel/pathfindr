@@ -1,6 +1,15 @@
 const { URL } = require('url');
 const { JSDOM } = require('jsdom');
 
+const removeTrailingSlash = (path) => {
+  const lastChar = path.slice(-1);
+  if (lastChar === '/') {
+    return path.slice(0, -1);
+  } else {
+    return path;
+  }
+};
+
 const normalizeURL = (url) => {
   try {
     const urlObj = new URL(url);
@@ -8,26 +17,32 @@ const normalizeURL = (url) => {
     const normalized = urlObj.hostname + path;
     return normalized;
   } catch (error) {
-    throw error;
+    throw new Error(`Failed to normalize URL: ${error.message}`);
   }
 };
 
 const getURLsFromHTML = (htmlBody, baseURL) => {
   // returns non-normalized URLs from page
-  const dom = new JSDOM(htmlBody);
-  const aTags = dom.window.document.querySelectorAll('a');
-  const foundLinks = [];
 
-  for (const tag of aTags) {
-    let fullURL;
-    if (tag.href[0] === '/') {
-      fullURL = new URL(tag.href, baseURL).toString();
-    } else {
-      fullURL = tag.href;
+  try {
+    const dom = new JSDOM(htmlBody);
+    const aTags = dom.window.document.querySelectorAll('a');
+    const linksFromCurrentPage = [];
+
+    for (const tag of aTags) {
+      let fullURL = null;
+      if (tag.href[0] === '/') {
+        fullURL = new URL(tag.href, baseURL).toString();
+      } else {
+        fullURL = tag.href;
+      }
+      linksFromCurrentPage.push(fullURL);
     }
-    foundLinks.push(fullURL);
+    return linksFromCurrentPage;
+  } catch (error) {
+    console.error(`An error occurred while parsing HTML: ${error.message}`);
+    return [];
   }
-  return foundLinks;
 };
 
 const isSameDomain = (baseURL, currentURL) => {
@@ -41,8 +56,6 @@ const initPageCounter = (pages) => {
 };
 
 const crawlPage = async (baseURL, currentURL = baseURL, pages = {}) => {
-  // check if currentUrl is on same domain as baseURL, if not - return
-  // current `pages`.
   try {
     baseURL = new URL(baseURL);
     currentURL = new URL(currentURL);
@@ -52,7 +65,7 @@ const crawlPage = async (baseURL, currentURL = baseURL, pages = {}) => {
     if (!isSameDomain(baseURL, currentURL)) {
       return pages;
     }
-    // get normalized version of the currentURL
+
     const normalizedCurrentURL = normalizeURL(currentURL);
 
     // if `pages` already has entry for normalized version, increment count and
@@ -80,30 +93,28 @@ const crawlPage = async (baseURL, currentURL = baseURL, pages = {}) => {
 
     const contentType = res.headers.get('Content-Type');
     if (!contentType.startsWith('text/html')) {
-      throw new Error(`Received unwanted Content-Type: ${contentType}`);
+      console.log(`Ignoring non-HTML content: ${currentURL}`);
+      return pages;
     }
-    const html = await res.text();
-    const foundLinks = getURLsFromHTML(html, baseURL);
 
-    for (const link of foundLinks) {
-      await crawlPage(baseURL, link, pages);
-    }
-    pages['total_links'] += parseInt(foundLinks.length);
-    // return updated `pages` object
+    const html = await res.text();
+    const linksFromCurrentPage = getURLsFromHTML(html, baseURL);
+
+    // Slower crawling
+    // for (const link of linksFromCurrentPage) {
+    //   await crawlPage(baseURL, link, pages);
+    // }
+
+    // Fast crawling
+    await Promise.all(
+      linksFromCurrentPage.map((link) => crawlPage(baseURL, link, pages))
+    );
+
+    pages['total_links'] += linksFromCurrentPage.length;
     return pages;
   } catch (error) {
     console.error(`An error occurred: ${error.message}`);
     return pages;
-  }
-};
-
-// Helper functions
-const removeTrailingSlash = (path) => {
-  const lastChar = path.slice(-1);
-  if (lastChar === '/') {
-    return path.slice(0, -1);
-  } else {
-    return path;
   }
 };
 
