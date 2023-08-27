@@ -29,6 +29,10 @@ const getURLsFromHTML = (htmlBody, baseURL) => {
     const linksFromCurrentPage = [];
 
     for (const tag of aTags) {
+      if (!tag.href || tag.href.trim() === '') {
+        continue; // skip empty or blank URLs
+      }
+
       let fullURL = null;
       if (tag.href[0] === '/') {
         fullURL = new URL(tag.href, baseURL).toString();
@@ -112,7 +116,7 @@ const crawlPage = async (baseURL, currentURL = baseURL, pages = {}) => {
     pages['total_links'] += linksFromCurrentPage.length;
     return pages;
   } catch (error) {
-    console.error(`An error occurred: ${error.message}`);
+    console.error(`An error occurred with ${currentURL}: ${error.message}`);
     return pages;
   }
 };
