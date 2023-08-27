@@ -1,5 +1,5 @@
 const printReport = (pages) => {
-  // Prints out a nice report of the `object` object.
+  // Prints out a nice report of the `pages` object.
   console.log('\n\nStarting report.');
   const sortedPages = sortObject(pages);
 
