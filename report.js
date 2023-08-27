@@ -23,4 +23,5 @@ const sortPages = (pages) => {
 
 module.exports = {
   printReport,
+  sortPages,
 };
