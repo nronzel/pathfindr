@@ -103,6 +103,19 @@ const crawlPage = async (baseURL, currentURL = baseURL, pages = {}) => {
     const html = await res.text();
     const linksFromCurrentPage = getURLsFromHTML(html, baseURL);
 
+    const internalLinks = [];
+    const externalLinks = [];
+
+    for (const link of linksFromCurrentPage) {
+      if (isSameDomain(baseURL, link)) {
+        internalLinks.push(link);
+      } else {
+        externalLinks.push(link);
+      }
+    }
+
+    addExternalURLs(externalLinks, pages);
+
     // Slower crawling
     // for (const link of linksFromCurrentPage) {
     //   await crawlPage(baseURL, link, pages);
@@ -110,7 +123,7 @@ const crawlPage = async (baseURL, currentURL = baseURL, pages = {}) => {
 
     // Fast crawling
     await Promise.all(
-      linksFromCurrentPage.map((link) => crawlPage(baseURL, link, pages))
+      internalLinks.map((link) => crawlPage(baseURL, link, pages))
     );
 
     pages['total_links'] += linksFromCurrentPage.length;
@@ -118,6 +131,15 @@ const crawlPage = async (baseURL, currentURL = baseURL, pages = {}) => {
   } catch (error) {
     console.error(`An error occurred with ${currentURL}: ${error.message}`);
     return pages;
+  }
+};
+
+const addExternalURLs = (externalLinks, pages) => {
+  for (const link of externalLinks) {
+    const normalizedExternalURL = normalizeURL(link);
+    if (!(normalizedExternalURL in pages)) {
+      pages[normalizedExternalURL] = 0;
+    }
   }
 };
 
