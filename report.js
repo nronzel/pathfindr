@@ -8,7 +8,9 @@ const printReport = (pages) => {
   Object.keys(sortedPages).forEach((key) => {
     let value = sortedPages[key];
     if (key === 'total_links') {
-      console.log(`Found ${value} total internal links.`);
+      console.log(`Found ${value} total links.`);
+    } else if (value === 0) {
+      console.log(`Found external link to ${key}`);
     } else {
       console.log(`Found ${value} internal links to ${key}`);
     }
