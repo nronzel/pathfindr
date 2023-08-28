@@ -27,9 +27,10 @@ const sortObject = (object) => {
 
 const objectToCsv = (data) => {
   // Transform the object into an array of objects
-  const dataArray = Object.keys(data).map((link) => ({
+  const sortedObject = sortObject(data);
+  const dataArray = Object.keys(sortedObject).map((link) => ({
     Link: link,
-    Count: data[link],
+    Count: sortedObject[link],
   }));
 
   // If the resulting array is empty, return null
