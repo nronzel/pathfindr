@@ -5,9 +5,10 @@ a comprehensive report on internal and external links.
 
 ## Features
 
-- Crawls a given base URL to enumerate internal links.
+- Crawls a given base URL to enumerate all links.
 - Ignores pages with `Content-Type` other than `text/html`.
 - Uses concurrent crawling for improved performance.
+- Logs results to CSV file
 
 ## Quick Start
 
