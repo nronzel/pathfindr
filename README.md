@@ -20,7 +20,7 @@ Clone the repository:
 git clone https://github.com/nronzel/pathfindr.git
 ```
 
-Naviate to the project directory:
+Navigate to the project directory:
 
 ```bash
 cd pathfindr
