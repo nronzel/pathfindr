@@ -1,7 +1,7 @@
 # Pathfindr
 
-Pathfindr helps you analyze internal linking within your website by generating
-a comprehensive report.
+Pathfindr helps you analyze linking within your website by generating
+a comprehensive report on internal and external links.
 
 ## Features
 
@@ -53,7 +53,7 @@ npm test
 ## Future Roadmap
 
 - Enhance error handling to accommodate larger, more complex sites.
-- Include external link counts in report.
+- ~~Include external link counts in report.~~
 - ~~Add CSV export functionality.~~
 - Implement logging for comprehensive crawling records.
 - Incorporate data visualization to represent internal linking graphically.
