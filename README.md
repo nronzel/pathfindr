@@ -53,7 +53,7 @@ npm test
 ## Future Roadmap
 
 - Enhance error handling to accommodate larger, more complex sites.
-- ~~Include external link counts in report.~~
-- ~~Add CSV export functionality.~~
+- ~~Include external link counts in report.~~ _done_
+- ~~Add CSV export functionality.~~ _done_
 - Implement logging for comprehensive crawling records.
 - Incorporate data visualization to represent internal linking graphically.
